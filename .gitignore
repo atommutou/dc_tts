@@ -4,3 +4,4 @@ mags/
 mels/
 samples/
 *.pyc
+.idea/
