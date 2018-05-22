@@ -1,0 +1,6 @@
+LJ_logdir/
+LJSpeech-1.1/
+mags/
+mels/
+samples/
+*.pyc

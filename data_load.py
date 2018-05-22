@@ -26,8 +26,8 @@ def text_normalize(text):
                            if unicodedata.category(char) != 'Mn') # Strip accents
 
     text = text.lower()
-    text = re.sub("[^{}]".format(hp.vocab), " ", text)
-    text = re.sub("[ ]+", " ", text)
+    text = re.sub("[^{}]".format(hp.vocab), " ", text) # 不在[]中的字符：[^abc] 匹配除了a,b,c之外的字符。
+    text = re.sub("[ ]+", " ", text) # 空格匹配空格
     return text
 
 def load_data(mode="train"):
@@ -38,11 +38,11 @@ def load_data(mode="train"):
     # Load vocabulary
     char2idx, idx2char = load_vocab()
 
-    if mode=="train":
+    if mode == "train":
         if "LJ" in hp.data:
             # Parse
             fpaths, text_lengths, texts = [], [], []
-            transcript = os.path.join(hp.data, 'transcript.csv')
+            transcript = os.path.join(hp.data, 'metadata.csv')
             lines = codecs.open(transcript, 'r', 'utf-8').readlines()
             for line in lines:
                 fname, _, text = line.strip().split("|")
@@ -59,7 +59,7 @@ def load_data(mode="train"):
         else: # nick or kate
             # Parse
             fpaths, text_lengths, texts = [], [], []
-            transcript = os.path.join(hp.data, 'transcript.csv')
+            transcript = os.path.join(hp.data, 'metadata.csv')
             lines = codecs.open(transcript, 'r', 'utf-8').readlines()
             for line in lines:
                 fname, _, text, is_inside_quotes, duration = line.strip().split("|")
@@ -89,7 +89,7 @@ def get_batch():
     """Loads training data and put them in queues"""
     with tf.device('/cpu:0'):
         # Load data
-        fpaths, text_lengths, texts = load_data() # list
+        fpaths, text_lengths, texts = load_data()
         maxlen, minlen = max(text_lengths), min(text_lengths)
 
         # Calc total batch count
